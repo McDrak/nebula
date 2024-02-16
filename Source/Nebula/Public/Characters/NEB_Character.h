@@ -18,7 +18,7 @@
 #include "NEB_Character.generated.h"
 
 class UNEB_GameplayAbility;
-class UNEB_AttributeSet;
+class UNEB_CharacterAttributeSet;
 class UNEB_AbilitySystemComponent;
 
 /**
@@ -56,7 +56,7 @@ protected:
 	TObjectPtr<UNEB_AbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
-	TObjectPtr<UNEB_AttributeSet> AttributeSet;
+	TObjectPtr<UNEB_CharacterAttributeSet> AttributeSet;
 
 #pragma endregion Components
 
@@ -94,7 +94,7 @@ protected:
 	void ApplyStartupCharacterEffects();
 
 public:
-	UNEB_AttributeSet* GetNEBAttributeSet() const { return AttributeSet.Get(); }
+	UNEB_CharacterAttributeSet* GetNEBAttributeSet() const { return AttributeSet.Get(); }
 
 #pragma endregion GameplayAbilitySystem
 
