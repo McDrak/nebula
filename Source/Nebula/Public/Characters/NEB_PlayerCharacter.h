@@ -11,6 +11,11 @@
 // Generated Header Included Last
 #include "NEB_PlayerCharacter.generated.h"
 
+class UCameraComponent;
+struct FInputActionValue;
+class UInputAction;
+class UInputMappingContext;
+
 /**
  * Character for Players on the Nebula Project
  */
@@ -40,5 +45,39 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 #pragma endregion APawn
+
+#pragma region Components
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> FirstPersonMeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
+
+public:
+	USkeletalMeshComponent* GetFirstPersonMeshComponent() const { return FirstPersonMeshComponent.Get(); }
+
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent.Get(); }
+
+#pragma endregion Components
+
+#pragma region Inputs
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Inputs")
+	TObjectPtr<UInputMappingContext> MainInputMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inputs")
+	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inputs")
+	TObjectPtr<UInputAction> LookAction;
+
+	void Move(const FInputActionValue& Value);
+
+	void Look(const FInputActionValue& Value);
+
+#pragma endregion Inputs
 
 };
