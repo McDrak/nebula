@@ -7,7 +7,7 @@ Nebula is a project where I'll be adding the Unreal Engine knowledge I've collec
 - ~~GAS Initialization~~
 - ~~Base Input Setup~~
 - ~~Ability Input Setup~~
-- Jump Ability
+- ~~Jump Ability~~
 - Base Weapon Item
 - Inventory System
 - Interaction System

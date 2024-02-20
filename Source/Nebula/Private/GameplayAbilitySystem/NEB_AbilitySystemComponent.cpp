@@ -49,10 +49,7 @@ void UNEB_AbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& Abi
 			continue;
 		}
 
-		if(!CurrentAbilitySpec.IsActive())
-		{
-			TryActivateAbility(CurrentAbilitySpec.Handle);
-		}
+		AbilitySpecInputReleased(CurrentAbilitySpec);
 		break;
 	}
 }
@@ -72,7 +69,10 @@ void UNEB_AbilitySystemComponent::OnAbilityInputHeld(const FGameplayTag& Ability
 			continue;
 		}
 
-		AbilitySpecInputReleased(CurrentAbilitySpec);
+		if(!CurrentAbilitySpec.IsActive())
+		{
+			TryActivateAbility(CurrentAbilitySpec.Handle);
+		}
 		break;
 	}
 }
