@@ -9,6 +9,8 @@
 // Generated Header Included Last
 #include "NEB_PlayerController.generated.h"
 
+struct FGameplayTag;
+class UNEB_AbilityInputConfig;
 class ANEB_PlayerCharacter;
 
 /**
@@ -29,6 +31,23 @@ public:
 	virtual void SetupInputComponent() override;
 
 #pragma endregion APlayerController
+
+#pragma region Ability Inputs
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Abilityh Inputs")
+	TObjectPtr<UNEB_AbilityInputConfig> AbilityInputConfig;
+
+	UFUNCTION()
+	void OnAbilityInputPressed(FGameplayTag AbilityInputTag);
+
+	UFUNCTION()
+	void OnAbilityInputReleased(FGameplayTag AbilityInputTag);
+
+	UFUNCTION()
+	void OnAbilityInputHeld(FGameplayTag AbilityInputTag);
+
+#pragma endregion Ability Inputs
 
 #pragma region Core Properties
 

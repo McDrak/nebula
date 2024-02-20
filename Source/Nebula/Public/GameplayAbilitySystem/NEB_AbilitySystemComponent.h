@@ -38,4 +38,13 @@ public:
 	void SetStartupEffectsApplied(const bool bNewStartupEffectsApplied) { bWereStartupEffectsApplied = bNewStartupEffectsApplied; }
 
 #pragma endregion Startup
+
+#pragma region Ability Inputs
+
+	void OnAbilityInputPressed(const FGameplayTag& AbilityInputTag);
+	void OnAbilityInputReleased(const FGameplayTag& AbilityInputTag);
+	void OnAbilityInputHeld(const FGameplayTag& AbilityInputTag);
+
+#pragma endregion Ability Inputs
+
 };
