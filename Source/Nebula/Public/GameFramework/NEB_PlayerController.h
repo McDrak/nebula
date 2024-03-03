@@ -47,6 +47,11 @@ protected:
 	UFUNCTION()
 	void OnAbilityInputHeld(FGameplayTag AbilityInputTag);
 
+public:
+	void BindAbilityInputConfig(const UNEB_AbilityInputConfig* NewAbilityInputConfig);
+
+	void UnBindAbilityInputConfig(const UNEB_AbilityInputConfig* NewAbilityInputConfig);
+
 #pragma endregion Ability Inputs
 
 #pragma region Core Properties

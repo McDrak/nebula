@@ -16,3 +16,5 @@ Nebula is a project where I'll be adding the Unreal Engine knowledge I've collec
 - Ability 2
 - Weapon 1
 - Weapon 2
+- EOS Connection
+- Lobby System

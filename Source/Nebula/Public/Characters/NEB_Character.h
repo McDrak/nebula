@@ -20,6 +20,7 @@
 class UNEB_GameplayAbility;
 class UNEB_CharacterAttributeSet;
 class UNEB_AbilitySystemComponent;
+class ANEB_Item;
 
 /**
  * Base class for the Characters in the Nebula Project
@@ -94,8 +95,26 @@ protected:
 	void ApplyStartupCharacterEffects();
 
 public:
+	void GiveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToGive);
+	void RemoveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToRemove);
+
 	UNEB_CharacterAttributeSet* GetNEBAttributeSet() const { return AttributeSet.Get(); }
 
 #pragma endregion GameplayAbilitySystem
+
+#pragma region Pick Up
+
+protected:
+	TWeakObjectPtr<ANEB_Item> CurrentHoldingItem;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pick Up")
+	FName EquipSocketName;
+
+public:
+	FName GetEquipSocketName() const { return EquipSocketName; }
+
+	void EquipItem(ANEB_Item* ItemToEquip);
+
+#pragma endregion Pick Up
 
 };

@@ -34,13 +34,7 @@ void ANEB_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(const ANEB_PlayerController* PlayerController = Cast<ANEB_PlayerController>(GetController()))
-	{
-		if(UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			InputSubsystem->AddMappingContext(MainInputMappingContext.Get(), 0);
-		}
-	}
+	AddInputMappingContext(MainInputMappingContext.Get());
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -53,6 +47,8 @@ void ANEB_PlayerCharacter::Tick(float DeltaSeconds)
 void ANEB_PlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	PlayerControllerPtr = Cast<ANEB_PlayerController>(NewController);
 
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
@@ -112,5 +108,29 @@ void ANEB_PlayerCharacter::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerCharacter::AddInputMappingContext(const UInputMappingContext* InputMappingContextToGive)
+{
+	if(const ANEB_PlayerController* PlayerController = Cast<ANEB_PlayerController>(GetController()))
+	{
+		if(UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			InputSubsystem->AddMappingContext(InputMappingContextToGive, 0);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerCharacter::RemoveInputMappingContext(const UInputMappingContext* InputMappingContextToRemove)
+{
+	if(const ANEB_PlayerController* PlayerController = Cast<ANEB_PlayerController>(GetController()))
+	{
+		if(UEnhancedInputLocalPlayerSubsystem* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			InputSubsystem->RemoveMappingContext(InputMappingContextToRemove);
+		}
 	}
 }

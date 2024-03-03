@@ -15,6 +15,7 @@ class UCameraComponent;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
+class ANEB_PlayerController;
 
 /**
  * Character for Players on the Nebula Project
@@ -62,6 +63,16 @@ public:
 
 #pragma endregion Components
 
+#pragma region General References
+
+protected:
+	TWeakObjectPtr<ANEB_PlayerController> PlayerControllerPtr;
+
+public:
+	ANEB_PlayerController* GetNEBPlayerController() const { return PlayerControllerPtr.Get(); }
+
+#pragma endregion General References
+
 #pragma region Inputs
 
 protected:
@@ -77,6 +88,10 @@ protected:
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+
+public:
+	void AddInputMappingContext(const UInputMappingContext* InputMappingContextToGive);
+	void RemoveInputMappingContext(const UInputMappingContext* InputMappingContextToRemove);
 
 #pragma endregion Inputs
 

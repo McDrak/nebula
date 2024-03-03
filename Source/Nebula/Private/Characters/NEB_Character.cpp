@@ -4,34 +4,28 @@
 #include "Characters/NEB_Character.h"
 
 // Project Includes
+#include "Actors/NEB_Item.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
 #include "GameplayAbilitySystem/NEB_GameplayAbility.h"
 #include "GameplayAbilitySystem/NEB_GameplayEffect.h"
 #include "Libraries/NEB_GameplayStatics.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-// Sets default values
 ANEB_Character::ANEB_Character()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Called when the game starts or when spawned
 void ANEB_Character::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Called every frame
 void ANEB_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -59,24 +53,7 @@ void ANEB_Character::GrantInitialCharacterAbilities()
 		return;
 	}
 
-	for(TSubclassOf<UNEB_GameplayAbility> CurrentAbilityClass : InitialCharacterAbilities)
-	{
-		FGameplayAbilitySpec CurrentAbilitySpec(CurrentAbilityClass, 1);
-		if(const UNEB_GameplayAbility* CurrentAbility  = Cast<UNEB_GameplayAbility>(CurrentAbilitySpec.Ability))
-		{
-			CurrentAbilitySpec.DynamicAbilityTags.AddTag(CurrentAbility->GetStartupInputTag());
-			CurrentAbilitySpec.SourceObject = this;
-
-			FGameplayAbilitySpecHandle CurrentAbilityHandle = AbilitySystemComponent->GiveAbility(CurrentAbilitySpec);
-			if(!CurrentAbilityHandle.IsValid())
-			{
-				continue;
-			}
-
-			GrantedAbilitiesMap.Add(CurrentAbilityClass, CurrentAbilityHandle);
-		}
-	}
-
+	GiveAbilities(InitialCharacterAbilities);
 	AbilitySystemComponent->SetInitialAbilitiesGranted(true);
 }
 
@@ -105,5 +82,67 @@ void ANEB_Character::ApplyStartupCharacterEffects()
 	}
 
 	AbilitySystemComponent->SetStartupEffectsApplied(true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_Character::GiveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToGive)
+{
+	if(!HasAuthority() || !AbilitySystemComponent)
+	{
+		return;
+	}
+
+	for(TSubclassOf<UNEB_GameplayAbility> CurrentAbilityClass : InitialCharacterAbilities)
+	{
+		FGameplayAbilitySpec CurrentAbilitySpec(CurrentAbilityClass, 1);
+		if(const UNEB_GameplayAbility* CurrentAbility  = Cast<UNEB_GameplayAbility>(CurrentAbilitySpec.Ability))
+		{
+			CurrentAbilitySpec.DynamicAbilityTags.AddTag(CurrentAbility->GetStartupInputTag());
+			CurrentAbilitySpec.SourceObject = this;
+
+			FGameplayAbilitySpecHandle CurrentAbilityHandle = AbilitySystemComponent->GiveAbility(CurrentAbilitySpec);
+			if(!CurrentAbilityHandle.IsValid())
+			{
+				continue;
+			}
+
+			GrantedAbilitiesMap.Add(CurrentAbilityClass, CurrentAbilityHandle);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_Character::RemoveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToRemove)
+{
+	if(!HasAuthority() || !AbilitySystemComponent)
+	{
+		return;
+	}
+
+	for(const TSubclassOf<UNEB_GameplayAbility>& CurrentAbilityClass : AbilitiesToRemove)
+	{
+		if(GrantedAbilitiesMap.Contains(CurrentAbilityClass))
+		{
+			AbilitySystemComponent->ClearAbility(GrantedAbilitiesMap[CurrentAbilityClass]);
+			GrantedAbilitiesMap.Remove(CurrentAbilityClass);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_Character::EquipItem(ANEB_Item* ItemToEquip)
+{
+	if(!ItemToEquip)
+	{
+		return;
+	}
+
+	if(CurrentHoldingItem.IsValid())
+	{
+		CurrentHoldingItem->OnItemDropped();
+		CurrentHoldingItem = nullptr;
+	}
+
+	CurrentHoldingItem->OnItemPickedUp(this);
 }
 

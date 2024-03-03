@@ -2,10 +2,35 @@
 
 #pragma once
 
+// Engine Includes
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
+
+// Project Includes
 #include "NEB_AbilityInputConfig.h"
+
+// Generated Header Included Last
 #include "NEB_EnhancedInputComponent.generated.h"
+
+/**
+ * TODO
+ */
+USTRUCT()
+struct FNEB_AbilityInputBindDefinition
+{
+	GENERATED_BODY()
+
+	FEnhancedInputActionEventBinding* InputPressedBind;
+
+	FEnhancedInputActionEventBinding* InputReleasedBind;
+
+	FEnhancedInputActionEventBinding* InputHeldBind;
+
+	FNEB_AbilityInputBindDefinition()
+		: InputPressedBind(nullptr), InputReleasedBind(nullptr), InputHeldBind(nullptr)
+	{
+	}
+};
 
 /**
  * Enhanced Input Component for the Nebula Project
@@ -20,9 +45,15 @@ public:
 
 #pragma region Ability System Inputs
 
+protected:
+	UPROPERTY(Transient)
+	TMap<UInputAction*, FNEB_AbilityInputBindDefinition> AbilityInputBindsMap; 
+
 public:
 	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 	void BindAbilityActions(const UNEB_AbilityInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc);
+
+	void UnBindAbilityActions(const UNEB_AbilityInputConfig* InputConfig);
 
 #pragma endregion Ability System Inputs
 };
@@ -35,26 +66,33 @@ void UNEB_EnhancedInputComponent::BindAbilityActions(const UNEB_AbilityInputConf
 		return;
 	}
 
-	for(const FNEB_AbilityInputConfigDefinition& CurrentDefinition : InputConfig->GetAbilityInputConfigDefinitions())
+	for(const FNEB_AbilityInputConfigDefinition& CurrentConfigDefinition : InputConfig->GetAbilityInputConfigDefinitions())
 	{
-		if(!CurrentDefinition.AbilityInputAction || !CurrentDefinition.AbilityInputTag.IsValid())
+		if(!CurrentConfigDefinition.AbilityInputAction || !CurrentConfigDefinition.AbilityInputTag.IsValid())
 		{
 			continue;
 		}
 
+		FNEB_AbilityInputBindDefinition InputBindDefinition;
+
 		if(PressedFunc)
 		{
-			BindAction(CurrentDefinition.AbilityInputAction, ETriggerEvent::Triggered, Object, PressedFunc, CurrentDefinition.AbilityInputTag);
+			FEnhancedInputActionEventBinding& PressedInputBind = BindAction(CurrentConfigDefinition.AbilityInputAction, ETriggerEvent::Triggered, Object, PressedFunc, CurrentConfigDefinition.AbilityInputTag);
+			InputBindDefinition.InputPressedBind = &PressedInputBind;
 		}
 
 		if(ReleasedFunc)
 		{
-			BindAction(CurrentDefinition.AbilityInputAction, ETriggerEvent::Completed, Object, ReleasedFunc, CurrentDefinition.AbilityInputTag);
+			FEnhancedInputActionEventBinding& ReleasedInputBind = BindAction(CurrentConfigDefinition.AbilityInputAction, ETriggerEvent::Completed, Object, ReleasedFunc, CurrentConfigDefinition.AbilityInputTag);
+			InputBindDefinition.InputReleasedBind = &ReleasedInputBind;
 		}
 
 		if(HeldFunc)
 		{
-			BindAction(CurrentDefinition.AbilityInputAction, ETriggerEvent::Triggered, Object, HeldFunc, CurrentDefinition.AbilityInputTag);
+			FEnhancedInputActionEventBinding& HeldInputBind = BindAction(CurrentConfigDefinition.AbilityInputAction, ETriggerEvent::Triggered, Object, HeldFunc, CurrentConfigDefinition.AbilityInputTag);
+			InputBindDefinition.InputHeldBind = &HeldInputBind;
 		}
+
+		AbilityInputBindsMap.Add(CurrentConfigDefinition.AbilityInputAction.Get(), InputBindDefinition);
 	}
 }

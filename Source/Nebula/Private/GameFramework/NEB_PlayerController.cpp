@@ -35,10 +35,7 @@ void ANEB_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if(UNEB_EnhancedInputComponent* EnhancedInputComponent = Cast<UNEB_EnhancedInputComponent>(InputComponent); EnhancedInputComponent && AbilityInputConfig)
-	{
-		EnhancedInputComponent->BindAbilityActions(AbilityInputConfig.Get(), this, &ANEB_PlayerController::OnAbilityInputPressed, &ANEB_PlayerController::OnAbilityInputReleased, &ANEB_PlayerController::OnAbilityInputHeld);
-	}
+	BindAbilityInputConfig(AbilityInputConfig.Get());
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -80,5 +77,23 @@ void ANEB_PlayerController::OnAbilityInputHeld(FGameplayTag AbilityInputTag)
 	if(UNEB_AbilitySystemComponent* AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(PlayerCharacterPtr->GetAbilitySystemComponent()))
 	{
 		AbilitySystemComponent->OnAbilityInputHeld(AbilityInputTag);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerController::BindAbilityInputConfig(const UNEB_AbilityInputConfig* NewAbilityInputConfig)
+{
+	if(UNEB_EnhancedInputComponent* EnhancedInputComponent = Cast<UNEB_EnhancedInputComponent>(InputComponent); EnhancedInputComponent && NewAbilityInputConfig)
+	{
+		EnhancedInputComponent->BindAbilityActions(NewAbilityInputConfig, this, &ANEB_PlayerController::OnAbilityInputPressed, &ANEB_PlayerController::OnAbilityInputReleased, &ANEB_PlayerController::OnAbilityInputHeld);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerController::UnBindAbilityInputConfig(const UNEB_AbilityInputConfig* NewAbilityInputConfig)
+{
+	if(UNEB_EnhancedInputComponent* EnhancedInputComponent = Cast<UNEB_EnhancedInputComponent>(InputComponent); EnhancedInputComponent && NewAbilityInputConfig)
+	{
+		EnhancedInputComponent->UnBindAbilityActions(NewAbilityInputConfig);
 	}
 }
