@@ -26,7 +26,7 @@ class NEBULA_API ANEB_PlayerCharacter : public ANEB_Character
 	GENERATED_BODY()
 
 public:
-	ANEB_PlayerCharacter();
+	ANEB_PlayerCharacter(const FObjectInitializer& ObjectInitializer);
 
 #pragma region AActor
 

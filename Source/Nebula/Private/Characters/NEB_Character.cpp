@@ -5,13 +5,15 @@
 
 // Project Includes
 #include "Actors/NEB_Item.h"
+#include "Components/NEB_CharacterMovementComponent.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
 #include "GameplayAbilitySystem/NEB_GameplayAbility.h"
 #include "GameplayAbilitySystem/NEB_GameplayEffect.h"
 #include "Libraries/NEB_GameplayStatics.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-ANEB_Character::ANEB_Character()
+ANEB_Character::ANEB_Character(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UNEB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
 }

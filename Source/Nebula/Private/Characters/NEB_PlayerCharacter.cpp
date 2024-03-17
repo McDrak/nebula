@@ -16,7 +16,8 @@
 #include "GameplayAbilitySystem/AttributeSets/NEB_PlayerAttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
-ANEB_PlayerCharacter::ANEB_PlayerCharacter()
+ANEB_PlayerCharacter::ANEB_PlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCameraComponent"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
