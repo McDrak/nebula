@@ -6,7 +6,7 @@
 #include "CoreMinimal.h"
 
 // Project Includes
-#include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
+#include "AttributeSet.h"
 
 // Generated Header Included Last
 #include "NEB_PlayerAttributeSet.generated.h"
@@ -15,7 +15,7 @@
  * Attribute Set class for Player Characters on Nebula Project
  */
 UCLASS()
-class NEBULA_API UNEB_PlayerAttributeSet : public UNEB_CharacterAttributeSet
+class NEBULA_API UNEB_PlayerAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 

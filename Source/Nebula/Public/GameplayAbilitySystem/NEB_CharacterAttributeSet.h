@@ -7,17 +7,12 @@
 
 // Framework Includes
 #include "AttributeSet.h"
-#include "AbilitySystemComponent.h"
 
 // Project Includes
-#include "NEB_CharacterAttributeSet.generated.h"
+#include "Definitions/NEB_GameplayAbilitiesDefinitions.h"
 
-// Uses macros from AttributeSet.h
-#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+// Generated Header Included Last
+#include "NEB_CharacterAttributeSet.generated.h"
 
 /**
  * Base class for the Attribute Set in the Nebula Project 

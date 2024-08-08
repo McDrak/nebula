@@ -13,7 +13,7 @@
 #include "GameFramework/NEB_PlayerController.h"
 #include "GameFramework/NEB_PlayerState.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
-#include "GameplayAbilitySystem/AttributeSets/NEB_PlayerAttributeSet.h"
+#include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 ANEB_PlayerCharacter::ANEB_PlayerCharacter(const FObjectInitializer& ObjectInitializer)
@@ -54,7 +54,8 @@ void ANEB_PlayerCharacter::PossessedBy(AController* NewController)
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
-		AttributeSet = CurrentPlayerState->GetNEBAttributeSet();
+		AbilitySystemComponent->AddSpawnedAttribute(CharacterAttributeSet);
+		PlayerAttributeSet = CurrentPlayerState->GetNEBAttributeSet();
 
 		CurrentPlayerState->InitAbilityActorInfo(this);
 
@@ -72,7 +73,8 @@ void ANEB_PlayerCharacter::OnRep_PlayerState()
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
-		AttributeSet = CurrentPlayerState->GetNEBAttributeSet();
+		AbilitySystemComponent->AddSpawnedAttribute(CharacterAttributeSet);
+		PlayerAttributeSet = CurrentPlayerState->GetNEBAttributeSet();
 
 		CurrentPlayerState->InitAbilityActorInfo(this);
 	}

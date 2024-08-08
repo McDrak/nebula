@@ -53,26 +53,22 @@ public:
 #pragma region Components
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UNEB_AbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY()
-	TObjectPtr<UNEB_CharacterAttributeSet> AttributeSet;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UNEB_CharacterAttributeSet> CharacterAttributeSet;
 
 #pragma endregion Components
 
 #pragma region GameplayAbilitySystem
 
 protected:
-	/** Attributes Effect that will be applied to the Character when the game starts */
-	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability System")
-	FNEB_GameplayEffectSetup InitialAttributesSetup;
-
-	/** Gameplay Abilities (such as Sprint, Jump, etc) to be granted to the Character when the game starts */
+	/** Gameplay Abilities (such as Sprint, Jump, etc.) to be granted to the Character when the game starts */
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability System")
 	TArray<TSubclassOf<UNEB_GameplayAbility>> InitialCharacterAbilities;
 
-	/** Gameplay Effects (such as Stamina Regen, Health Regen, etc) to be applied to the Character when the game starts */
+	/** Gameplay Effects (such as Stamina Regen, Health Regen, etc.) to be applied to the Character when the game starts */
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Ability System")
 	TArray<FNEB_GameplayEffectSetup> StartupCharacterEffects;
 
@@ -98,7 +94,10 @@ public:
 	void GiveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToGive);
 	void RemoveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbility>>& AbilitiesToRemove);
 
-	UNEB_CharacterAttributeSet* GetNEBAttributeSet() const { return AttributeSet.Get(); }
+	UNEB_CharacterAttributeSet* GetNEBAttributeSet() const { return CharacterAttributeSet.Get(); }
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
 
 #pragma endregion GameplayAbilitySystem
 

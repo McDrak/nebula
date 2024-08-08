@@ -7,6 +7,7 @@
 #include "Actors/NEB_Item.h"
 #include "Components/NEB_CharacterMovementComponent.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
+#include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
 #include "GameplayAbilitySystem/NEB_GameplayAbility.h"
 #include "GameplayAbilitySystem/NEB_GameplayEffect.h"
 #include "Libraries/NEB_GameplayStatics.h"
@@ -16,6 +17,8 @@ ANEB_Character::ANEB_Character(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UNEB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CharacterAttributeSet = CreateDefaultSubobject<UNEB_CharacterAttributeSet>(TEXT("CharacterAttributeSet"));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -39,12 +42,12 @@ UAbilitySystemComponent* ANEB_Character::GetAbilitySystemComponent() const
 //----------------------------------------------------------------------------------------------------------------------
 void ANEB_Character::InitializeAttributes()
 {
-	if(!HasAuthority() || !InitialAttributesSetup.GameplayEffectClass || !AbilitySystemComponent)
+	if(!HasAuthority() || !AbilitySystemComponent)
 	{
 		return;
 	}
 
-	UNEB_GameplayStatics::ApplyGameplayEffectSetupToTarget(AbilitySystemComponent.Get(), AbilitySystemComponent.Get(), InitialAttributesSetup);
+	UNEB_GameplayStatics::InitializeGameplayAttributes(this, 1);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -129,6 +132,12 @@ void ANEB_Character::RemoveAbilities(const TArray<TSubclassOf<UNEB_GameplayAbili
 			GrantedAbilitiesMap.Remove(CurrentAbilityClass);
 		}
 	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+float ANEB_Character::GetHealth() const
+{
+	return CharacterAttributeSet ? CharacterAttributeSet->GetHealth() : 0.f;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

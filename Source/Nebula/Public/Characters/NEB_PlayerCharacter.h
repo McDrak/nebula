@@ -11,6 +11,7 @@
 // Generated Header Included Last
 #include "NEB_PlayerCharacter.generated.h"
 
+class UNEB_PlayerAttributeSet;
 class UCameraComponent;
 struct FInputActionValue;
 class UInputAction;
@@ -55,6 +56,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
+
+	UPROPERTY()
+	TObjectPtr<UNEB_PlayerAttributeSet> PlayerAttributeSet;
 
 public:
 	USkeletalMeshComponent* GetFirstPersonMeshComponent() const { return FirstPersonMeshComponent.Get(); }

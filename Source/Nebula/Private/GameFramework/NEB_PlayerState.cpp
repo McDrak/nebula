@@ -13,10 +13,10 @@ ANEB_PlayerState::ANEB_PlayerState()
 	// Create ability system component, and set it to be explicitly replicated
 	AbilitySystemComponent = CreateDefaultSubobject<UNEB_AbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
-	// Mixed mode means we only are replicated the GEs to ourself, not the GEs to simulated proxies.
+	// Mixed mode means we only are replicated the GEs to ourselves, not the GEs to simulated proxies.
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	AttributeSet = CreateDefaultSubobject<UNEB_PlayerAttributeSet>(TEXT("AttributeSet"));
+	PlayerAttributeSet = CreateDefaultSubobject<UNEB_PlayerAttributeSet>(TEXT("PlayerAttributeSet"));
 
 	// Set PlayerState's NetUpdateFrequency to the same as the Character.
 	// Default is very low for PlayerStates and introduces perceived lag in the ability system.

@@ -43,18 +43,18 @@ public:
 #pragma region Components
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UNEB_AbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY()
-	TObjectPtr<UNEB_PlayerAttributeSet> AttributeSet;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UNEB_PlayerAttributeSet> PlayerAttributeSet;
 
 #pragma endregion Components
 
 #pragma region Gameplay Ability System
 
 public:
-	UNEB_PlayerAttributeSet* GetNEBAttributeSet() const { return AttributeSet.Get(); }
+	UNEB_PlayerAttributeSet* GetNEBAttributeSet() const { return PlayerAttributeSet.Get(); }
 
 	void InitAbilityActorInfo(APawn* InAvatarActor);
 

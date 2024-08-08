@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 
 // Framework Includes
+#include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 
@@ -13,6 +14,13 @@
 #include "NEB_GameplayAbilitiesDefinitions.generated.h"
 
 class UNEB_GameplayEffect;
+
+// Uses macros from AttributeSet.h
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 /**
  * Struct that helps to apply a Gameplay Effect unto something

@@ -8,8 +8,9 @@ public class NebulaEditorTarget : TargetRules
 	public NebulaEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("Nebula");
+		BuildEnvironment = TargetBuildEnvironment.Unique;
 	}
 }

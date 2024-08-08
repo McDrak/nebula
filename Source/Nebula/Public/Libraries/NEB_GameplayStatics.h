@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 // Framework Includes
+#include "ActiveGameplayEffectHandle.h"
 #include "GameplayTagContainer.h"
 #include "Definitions/NEB_GameplayAbilitiesDefinitions.h"
 
@@ -36,8 +37,8 @@ public:
 	 * @returns FActiveGameplayEffectHandle of gameplay effect applied
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
-	static FActiveGameplayEffectHandle ApplyGameplayEffectToTarget(UNEB_AbilitySystemComponent* SourceAbilitySystemComponent, UNEB_AbilitySystemComponent* TargetAbilitySystemComponent, const TSubclassOf<UNEB_GameplayEffect>& EffectClass, const int32 EffectLevel = 1);
-	
+	static FActiveGameplayEffectHandle ApplyGameplayEffectToTarget( UNEB_AbilitySystemComponent* SourceAbilitySystemComponent, UNEB_AbilitySystemComponent* TargetAbilitySystemComponent, const TSubclassOf<UNEB_GameplayEffect>& EffectClass, const int32 EffectLevel = 1);
+
 	/**
 	 * Applies a Gameplay Effect Setup to Target Ability System Component with SourceASC avatar as source object
 	 * @param SourceAbilitySystemComponent Ability System Component that will apply the Gameplay Effect
@@ -46,7 +47,7 @@ public:
 	 * @returns FActiveGameplayEffectHandle of gameplay effect applied
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
-	static FActiveGameplayEffectHandle ApplyGameplayEffectSetupToTarget(UNEB_AbilitySystemComponent* SourceAbilitySystemComponent, UNEB_AbilitySystemComponent* TargetAbilitySystemComponent, const FNEB_GameplayEffectSetup& EffectToApply);
+	static FActiveGameplayEffectHandle ApplyGameplayEffectSetupToTarget( UNEB_AbilitySystemComponent* SourceAbilitySystemComponent, UNEB_AbilitySystemComponent* TargetAbilitySystemComponent, const FNEB_GameplayEffectSetup& EffectToApply);
 
 	/**
 	 * Applies a Gameplay Effect Setup to Target Ability System Component with custom source object, instigator and effectCauser
@@ -61,19 +62,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	static FActiveGameplayEffectHandle ApplyCustomGameplayEffectSetupToTarget(UNEB_AbilitySystemComponent* SourceAbilitySystemComponent, UNEB_AbilitySystemComponent* TargetAbilitySystemComponent, const FNEB_GameplayEffectSetup& EffectToApply, const UObject* SourceObject, AActor* Instigator, AActor* EffectCauser);
 
-	/** Returns true if the gameplay tag count is greater than zero
-	 *  @param AbilitySystemComponent Ability System Component in which tag is going to be search
-	 *	@param Tag Gameplay Tag that will be search in AbilitySystemComponent param
+	/**
+	 * Returns true if the gameplay tag count is greater than zero
+	 * @param AbilitySystemComponent Ability System Component in which tag is going to be search
+	 * @param Tag Gameplay Tag that will be search in AbilitySystemComponent param
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	static bool HasGameplayTag(const UNEB_AbilitySystemComponent* AbilitySystemComponent, const FGameplayTag& Tag);
 
-	/** Returns true if the gameplay tag count is greater than zero for any of the contained tags
-	 *  @param AbilitySystemComponent Ability System Component in which tags are going to be search
-	 *	@param TagList Gameplay Tag Container is the list of tags that will be search in AbilitySystemComponent param
+	/**
+	 * Returns true if the gameplay tag count is greater than zero for any of the contained tags
+	 * @param AbilitySystemComponent Ability System Component in which tags are going to be search
+	 * @param TagList Gameplay Tag Container is the list of tags that will be search in AbilitySystemComponent param
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Gameplay Ability System")
 	static bool HasAnyGameplayTags(const UNEB_AbilitySystemComponent* AbilitySystemComponent, const FGameplayTagContainer& TagList);
+
+	/**
+	 * Initializes the attributes of the referred actor at a certain level
+	 * @param ActorToInitialize Actor which attributes will be initialized
+	 * @param Level Level at which the attributes should be initialized
+	 */
+	static void InitializeGameplayAttributes(AActor* ActorToInitialize, const int32 Level);
 
 #pragma endregion GameplayAbilitySystem
 };
