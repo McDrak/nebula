@@ -23,6 +23,13 @@ class NEBULA_API UNEB_AnimInstance : public UAnimInstance
 public:
 	UNEB_AnimInstance();
 
+#pragma region AnimInstance
+
+public:
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+#pragma endregion AnimInstance
+
 #pragma region Core Properties
 
 protected:
@@ -37,19 +44,22 @@ protected:
 #pragma region State Properties
 
 protected:
-	UPROPERTY(BlueprintReadOnly,  Category = "State Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "State Properties")
 	FVector OwningCharacterVelocity;
 
-	UPROPERTY(BlueprintReadOnly,  Category = "State Properties")
-	float OwningCharacterGroundSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "State Properties")
+	float OwningCharacterSpeed;
 
-	UPROPERTY(BlueprintReadOnly,  Category = "State Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "State Properties")
+	float MovementSpeedThreshold;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,  Category = "State Properties")
 	uint8 bShouldMove : 1;
 
-	UPROPERTY(BlueprintReadOnly,  Category = "State Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "State Properties")
 	uint8 bIsFalling : 1;
 
-	UPROPERTY(BlueprintReadOnly,  Category = "State Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "State Properties")
 	uint8 bHasWeaponEquipped : 1;
 
 #pragma endregion State Properties

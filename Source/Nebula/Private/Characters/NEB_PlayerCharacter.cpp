@@ -7,27 +7,25 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Project Includes
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/NEB_PlayerController.h"
 #include "GameFramework/NEB_PlayerState.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
-#include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 ANEB_PlayerCharacter::ANEB_PlayerCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCameraComponent"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	CameraBoomComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoomComponent"));
+	CameraBoomComponent->SetupAttachment(RootComponent);
 
-	FirstPersonMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonMeshComponent"));
-	FirstPersonMeshComponent->SetOnlyOwnerSee(true);
-	FirstPersonMeshComponent->SetupAttachment(FirstPersonCameraComponent.Get());
-	FirstPersonMeshComponent->bCastDynamicShadow = false;
-	FirstPersonMeshComponent->CastShadow = false;
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetupAttachment(CameraBoomComponent);
+
+	bIsCameraOverRightShoulder = true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -36,6 +34,14 @@ void ANEB_PlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AddInputMappingContext(MainInputMappingContext.Get());
+
+	if(CameraBoomComponent)
+	{
+		InitialCameraSocketOffset = CameraBoomComponent->SocketOffset;
+		const FVector BoomShoulderLocation = bIsCameraOverRightShoulder ? ShoulderIdlePosition : -ShoulderIdlePosition;
+		const FVector FinalBoomLocation = InitialCameraSocketOffset + BoomShoulderLocation;
+		CameraBoomComponent->SocketOffset = FinalBoomLocation;
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -54,8 +60,7 @@ void ANEB_PlayerCharacter::PossessedBy(AController* NewController)
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
-		AbilitySystemComponent->AddSpawnedAttribute(CharacterAttributeSet);
-		PlayerAttributeSet = CurrentPlayerState->GetNEBAttributeSet();
+		PlayerAttributeSet = CurrentPlayerState->GetPlayerAttributeSet();
 
 		CurrentPlayerState->InitAbilityActorInfo(this);
 
@@ -73,8 +78,7 @@ void ANEB_PlayerCharacter::OnRep_PlayerState()
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
-		AbilitySystemComponent->AddSpawnedAttribute(CharacterAttributeSet);
-		PlayerAttributeSet = CurrentPlayerState->GetNEBAttributeSet();
+		PlayerAttributeSet = CurrentPlayerState->GetPlayerAttributeSet();
 
 		CurrentPlayerState->InitAbilityActorInfo(this);
 	}
@@ -88,7 +92,29 @@ void ANEB_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	if(UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction.Get(), ETriggerEvent::Triggered, this, &ANEB_PlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction.Get(), ETriggerEvent::Started, this, &ANEB_PlayerCharacter::DisableCameraRotationMovement);
+		EnhancedInputComponent->BindAction(MoveAction.Get(), ETriggerEvent::Canceled, this, &ANEB_PlayerCharacter::EnableCameraRotationMovement);
+		EnhancedInputComponent->BindAction(MoveAction.Get(), ETriggerEvent::Completed, this, &ANEB_PlayerCharacter::EnableCameraRotationMovement);
+
 		EnhancedInputComponent->BindAction(LookAction.Get(), ETriggerEvent::Triggered, this, &ANEB_PlayerCharacter::Look);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerCharacter::EnableCameraRotationMovement(const FInputActionValue& Value)
+{
+	if(GetCharacterMovement())
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_PlayerCharacter::DisableCameraRotationMovement(const FInputActionValue& Value)
+{
+	if(GetCharacterMovement())
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = false;
 	}
 }
 

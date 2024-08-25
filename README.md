@@ -1,6 +1,6 @@
 # Nebula
 
-Nebula is a project where I'll be adding the Unreal Engine knowledge I've collected over the years. It will be a Coop First-Person Shooter with Abilities. It will use the Gameplay Ability System as framework for gameplay mechanics and Epic Online System for P2P connections.
+Nebula is a project where I'll be adding the Unreal Engine knowledge I've collected over the years. It will be a Coop Third-Person Shooter with Abilities. It will use the Gameplay Ability System as framework for gameplay mechanics and Epic Online System for P2P connections.
 
 ## ToDo List
 - ~~Project Setup~~

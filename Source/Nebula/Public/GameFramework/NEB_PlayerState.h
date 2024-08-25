@@ -54,7 +54,7 @@ protected:
 #pragma region Gameplay Ability System
 
 public:
-	UNEB_PlayerAttributeSet* GetNEBAttributeSet() const { return PlayerAttributeSet.Get(); }
+	UNEB_PlayerAttributeSet* GetPlayerAttributeSet() const { return PlayerAttributeSet.Get(); }
 
 	void InitAbilityActorInfo(APawn* InAvatarActor);
 

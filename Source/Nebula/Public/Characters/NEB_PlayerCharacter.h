@@ -11,6 +11,7 @@
 // Generated Header Included Last
 #include "NEB_PlayerCharacter.generated.h"
 
+class USpringArmComponent;
 class UNEB_PlayerAttributeSet;
 class UCameraComponent;
 struct FInputActionValue;
@@ -52,18 +53,16 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> FirstPersonMeshComponent;
+	TObjectPtr<USpringArmComponent> CameraBoomComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
+	TObjectPtr<UCameraComponent> CameraComponent;
 
 	UPROPERTY()
 	TObjectPtr<UNEB_PlayerAttributeSet> PlayerAttributeSet;
 
 public:
-	USkeletalMeshComponent* GetFirstPersonMeshComponent() const { return FirstPersonMeshComponent.Get(); }
-
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent.Get(); }
+	UNEB_PlayerAttributeSet* GetPlayerAttributeSet() const { return PlayerAttributeSet; }
 
 #pragma endregion Components
 
@@ -89,6 +88,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Inputs")
 	TObjectPtr<UInputAction> LookAction;
 
+	void EnableCameraRotationMovement(const FInputActionValue& Value);
+
+	void DisableCameraRotationMovement(const FInputActionValue& Value);
+
 	void Move(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
@@ -98,5 +101,19 @@ public:
 	void RemoveInputMappingContext(const UInputMappingContext* InputMappingContextToRemove);
 
 #pragma endregion Inputs
+
+#pragma region Camera
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly ,Category = "Camera")
+	uint8 bIsCameraOverRightShoulder : 1;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly ,Category = "Camera")
+	FVector InitialCameraSocketOffset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly ,Category = "Camera")
+	FVector ShoulderIdlePosition;
+
+#pragma endregion Camera
 
 };

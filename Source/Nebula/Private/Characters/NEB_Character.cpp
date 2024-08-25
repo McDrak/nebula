@@ -154,6 +154,7 @@ void ANEB_Character::EquipItem(ANEB_Item* ItemToEquip)
 		CurrentHoldingItem = nullptr;
 	}
 
-	CurrentHoldingItem->OnItemPickedUp(this);
+	ItemToEquip->OnItemPickedUp(this);
+	CurrentHoldingItem = ItemToEquip;
 }
 
