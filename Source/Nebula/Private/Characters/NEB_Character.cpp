@@ -18,7 +18,8 @@ ANEB_Character::ANEB_Character(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CharacterAttributeSet = CreateDefaultSubobject<UNEB_CharacterAttributeSet>(TEXT("CharacterAttributeSet"));
+	AbilitySystemComponent = nullptr;
+	CharacterAttributeSet = nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

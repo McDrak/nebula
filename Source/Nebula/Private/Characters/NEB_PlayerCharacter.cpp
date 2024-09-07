@@ -60,11 +60,12 @@ void ANEB_PlayerCharacter::PossessedBy(AController* NewController)
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
+		CharacterAttributeSet = CurrentPlayerState->GetCharacterAttributeSet();
 		PlayerAttributeSet = CurrentPlayerState->GetPlayerAttributeSet();
 
+		InitializeAttributes();
 		CurrentPlayerState->InitAbilityActorInfo(this);
 
-		InitializeAttributes();
 		GrantInitialCharacterAbilities();
 		ApplyStartupCharacterEffects();
 	}
@@ -78,8 +79,10 @@ void ANEB_PlayerCharacter::OnRep_PlayerState()
 	if(ANEB_PlayerState* CurrentPlayerState = GetPlayerState<ANEB_PlayerState>())
 	{
 		AbilitySystemComponent = Cast<UNEB_AbilitySystemComponent>(CurrentPlayerState->GetAbilitySystemComponent());
+		CharacterAttributeSet = CurrentPlayerState->GetCharacterAttributeSet();
 		PlayerAttributeSet = CurrentPlayerState->GetPlayerAttributeSet();
 
+		InitializeAttributes();
 		CurrentPlayerState->InitAbilityActorInfo(this);
 	}
 }

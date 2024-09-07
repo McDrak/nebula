@@ -5,6 +5,7 @@
 
 // Project Includes
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
+#include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
 #include "GameplayAbilitySystem/AttributeSets/NEB_PlayerAttributeSet.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16,6 +17,7 @@ ANEB_PlayerState::ANEB_PlayerState()
 	// Mixed mode means we only are replicated the GEs to ourselves, not the GEs to simulated proxies.
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
+	CharacterAttributeSet = CreateDefaultSubobject<UNEB_CharacterAttributeSet>(TEXT("CharacterAttributeSet"));
 	PlayerAttributeSet = CreateDefaultSubobject<UNEB_PlayerAttributeSet>(TEXT("PlayerAttributeSet"));
 
 	// Set PlayerState's NetUpdateFrequency to the same as the Character.

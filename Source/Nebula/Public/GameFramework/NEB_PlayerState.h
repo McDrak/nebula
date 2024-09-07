@@ -12,6 +12,7 @@
 // Generated Header Included Last
 #include "NEB_PlayerState.generated.h"
 
+class UNEB_CharacterAttributeSet;
 class UNEB_PlayerAttributeSet;
 class UNEB_AbilitySystemComponent;
 
@@ -47,6 +48,9 @@ protected:
 	TObjectPtr<UNEB_AbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UNEB_CharacterAttributeSet> CharacterAttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UNEB_PlayerAttributeSet> PlayerAttributeSet;
 
 #pragma endregion Components
@@ -54,7 +58,9 @@ protected:
 #pragma region Gameplay Ability System
 
 public:
-	UNEB_PlayerAttributeSet* GetPlayerAttributeSet() const { return PlayerAttributeSet.Get(); }
+	UNEB_CharacterAttributeSet* GetCharacterAttributeSet() const { return CharacterAttributeSet; }
+
+	UNEB_PlayerAttributeSet* GetPlayerAttributeSet() const { return PlayerAttributeSet; }
 
 	void InitAbilityActorInfo(APawn* InAvatarActor);
 
