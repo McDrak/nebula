@@ -52,19 +52,10 @@ protected:
 	TObjectPtr<USphereComponent> SphereCollisionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UNEB_AbilitySystemComponent> AbilitySystemComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	uint8 bShouldRemoveStaticMeshOnInit : 1;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	uint8 bShouldRemoveSkeletalMeshOnInit : 1;
 
 #pragma endregion Components
 
@@ -80,6 +71,9 @@ protected:
 	TWeakObjectPtr<ANEB_Character> CurrentHolderCharacterPtr;
 
 	TWeakObjectPtr<ANEB_Character> PreviousHolderCharacterPtr;
+
+	UFUNCTION()
+	void OnPickupCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 public:
 	virtual void OnItemPickedUp(ANEB_Character* EquippingCharacter);

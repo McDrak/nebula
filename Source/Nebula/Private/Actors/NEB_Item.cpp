@@ -8,6 +8,7 @@
 
 // Project Includes
 #include "Characters/NEB_Character.h"
+#include "Characters/NEB_PlayerCharacter.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -18,9 +19,6 @@ ANEB_Item::ANEB_Item()
 	SphereCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollisionComponent"));
 	RootComponent = SphereCollisionComponent;
 
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComponent->SetupAttachment(RootComponent.Get());
-
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent.Get());
 
@@ -28,8 +26,6 @@ ANEB_Item::ANEB_Item()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
-	bShouldRemoveStaticMeshOnInit = false;
-	bShouldRemoveSkeletalMeshOnInit = false;
 	bShouldAttachToHolder = false;
 }
 
@@ -38,14 +34,9 @@ void ANEB_Item::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(bShouldRemoveStaticMeshOnInit && StaticMeshComponent)
+	if(SphereCollisionComponent)
 	{
-		StaticMeshComponent->DestroyComponent();
-	}
-
-	if(bShouldRemoveSkeletalMeshOnInit && SkeletalMeshComponent)
-	{
-		SkeletalMeshComponent->DestroyComponent();
+		SphereCollisionComponent->OnComponentBeginOverlap.AddUniqueDynamic(this, &ANEB_Item::OnPickupCollisionBeginOverlap);
 	}
 }
 
@@ -59,6 +50,20 @@ void ANEB_Item::Tick(float DeltaTime)
 UAbilitySystemComponent* ANEB_Item::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent.Get();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_Item::OnPickupCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(!bShouldAttachToHolder)
+	{
+		return;
+	}
+
+	if(ANEB_PlayerCharacter* PlayerCharacter = Cast<ANEB_PlayerCharacter>(OtherActor))
+	{
+		PlayerCharacter->EquipItem(this);
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

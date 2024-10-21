@@ -11,6 +11,5 @@ public class NebulaEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("Nebula");
-		BuildEnvironment = TargetBuildEnvironment.Unique;
 	}
 }
