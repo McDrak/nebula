@@ -15,7 +15,7 @@ void UNEB_AbilitySystemGlobals::ReloadAttributeDefaults()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void UNEB_AbilitySystemGlobals::InitAttributeDefaults(UAbilitySystemComponent* AbilitySystemComponent, const FName& GroupName, const int32 Level, const bool bInitialInit)
+void UNEB_AbilitySystemGlobals::InitAttributeSetDefaults(UAbilitySystemComponent* AbilitySystemComponent, const FName& GroupName, const int32 Level, const bool bInitialInit)
 {
 	if (FAttributeSetInitter* AttributeSetInitter = GetAttributeSetInitter())
 	{

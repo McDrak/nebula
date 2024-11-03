@@ -27,7 +27,7 @@ public:
 public:
 	virtual void ReloadAttributeDefaults() override;
 
-	void InitAttributeDefaults(UAbilitySystemComponent* AbilitySystemComponent, const FName& GroupName, const int32 Level, const bool bInitialInit);
+	void InitAttributeSetDefaults(UAbilitySystemComponent* AbilitySystemComponent, const FName& GroupName, const int32 Level, const bool bInitialInit);
 
 #pragma endregion UAbilitySystemGlobals
 };

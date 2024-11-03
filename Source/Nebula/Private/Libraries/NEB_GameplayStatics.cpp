@@ -145,5 +145,5 @@ void UNEB_GameplayStatics::InitializeGameplayAttributes(AActor* ActorToInitializ
 	const int32 ObjectIndex = ObjectWords.IndexOfByKey("BP") + 1;
 	const FName GroupName = *ObjectWords[ObjectIndex];
 
-	AbilitySystemGlobals->InitAttributeDefaults(AbilitySystemComponent, GroupName, Level, true);
+	AbilitySystemGlobals->InitAttributeSetDefaults(AbilitySystemComponent, GroupName, Level, true);
 }
