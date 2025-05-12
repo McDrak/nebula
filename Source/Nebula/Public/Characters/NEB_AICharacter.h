@@ -41,6 +41,8 @@ public:
 public:
 	virtual ENEB_AIState BP_GetAIState_Implementation() const override { return CurrentAIState; };
 
+	virtual void BP_SetAIState_Implementation(const ENEB_AIState NewAIState) override;
+
 #pragma endregion INEB_AIStateInterface
 
 #pragma region AIStates

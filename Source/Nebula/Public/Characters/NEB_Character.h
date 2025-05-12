@@ -12,6 +12,7 @@
 #include "GameplayAbilitySpecHandle.h"
 
 // Project Includes
+#include "GenericTeamAgentInterface.h"
 #include "Definitions/NEB_GameplayAbilitiesDefinitions.h"
 
 // Generated Header Included Last
@@ -26,7 +27,7 @@ class ANEB_Item;
  * Base class for the Characters in the Nebula Project
  */
 UCLASS()
-class NEBULA_API ANEB_Character : public ACharacter, public IAbilitySystemInterface
+class NEBULA_API ANEB_Character : public ACharacter, public IAbilitySystemInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -43,12 +44,31 @@ public:
 
 #pragma endregion AActor
 
+#pragma region APawn
+
+public:
+	virtual void PossessedBy(AController* NewController) override;
+
+#pragma endregion APawn
+
 #pragma region IAbilitySystemInterface
 
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 #pragma endregion IAbilitySystemInterface
+
+#pragma region IGenericTeamAgentInterface
+
+public:
+	virtual FGenericTeamId GetGenericTeamId() const override { return TeamID; }
+
+	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
+
+private:
+	FGenericTeamId TeamID;
+
+#pragma endregion IGenericTeamAgentInterface
 
 #pragma region Components
 

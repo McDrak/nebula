@@ -13,3 +13,12 @@ ANEB_AICharacter::ANEB_AICharacter(const FObjectInitializer& ObjectInitializer)
 	CurrentAIState = ENEB_AIState::Patrolling;
 	CurrentSplinePathPoint = -1;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_AICharacter::BP_SetAIState_Implementation(const ENEB_AIState NewAIState)
+{
+	if(CurrentAIState != NewAIState)
+	{
+		CurrentAIState = NewAIState;
+	}
+}

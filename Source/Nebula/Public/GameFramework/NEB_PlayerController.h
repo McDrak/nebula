@@ -4,6 +4,7 @@
 
 // Engine Includes
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "GameFramework/PlayerController.h"
 
 // Generated Header Included Last
@@ -17,7 +18,7 @@ class ANEB_PlayerCharacter;
  * Base class for Player Controllers on Nebula Project
  */
 UCLASS()
-class NEBULA_API ANEB_PlayerController : public APlayerController
+class NEBULA_API ANEB_PlayerController : public APlayerController, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -31,6 +32,18 @@ public:
 	virtual void SetupInputComponent() override;
 
 #pragma endregion APlayerController
+
+#pragma region IGenericTeamAgentInterface
+
+public:
+	virtual FGenericTeamId GetGenericTeamId() const override { return TeamID; }
+
+	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
+
+private:
+	FGenericTeamId TeamID;
+
+#pragma endregion IGenericTeamAgentInterface
 
 #pragma region Ability Inputs
 

@@ -9,6 +9,7 @@
 // Generated Header Included Last
 #include "NEB_AIController.generated.h"
 
+struct FActorPerceptionUpdateInfo;
 class UStateTreeAIComponent;
 
 UCLASS()
@@ -37,8 +38,12 @@ protected:
 #pragma region Perception
 
 protected:
+	virtual void OnSightPerceptionUpdated(const FActorPerceptionUpdateInfo& UpdateInfo);
+
+	virtual void OnHearingPerceptionUpdated(const FActorPerceptionUpdateInfo& UpdateInfo);
+
 	UFUNCTION()
-	virtual void OnPerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+	virtual void OnTargetPerceptionInfoUpdated(const FActorPerceptionUpdateInfo& UpdateInfo);
 
 #pragma endregion Perception
 };

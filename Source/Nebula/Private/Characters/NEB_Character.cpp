@@ -6,6 +6,7 @@
 // Project Includes
 #include "Actors/NEB_Item.h"
 #include "Components/NEB_CharacterMovementComponent.h"
+#include "Definitions/NEB_AIDefinitions.h"
 #include "GameplayAbilitySystem/NEB_AbilitySystemComponent.h"
 #include "GameplayAbilitySystem/NEB_CharacterAttributeSet.h"
 #include "GameplayAbilitySystem/NEB_GameplayAbility.h"
@@ -20,6 +21,8 @@ ANEB_Character::ANEB_Character(const FObjectInitializer& ObjectInitializer)
 
 	AbilitySystemComponent = nullptr;
 	CharacterAttributeSet = nullptr;
+
+	ANEB_Character::SetGenericTeamId(FGenericTeamId(static_cast<uint8>(ENEB_TeamID::None)));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -35,9 +38,29 @@ void ANEB_Character::Tick(float DeltaTime)
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+void ANEB_Character::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if(const IGenericTeamAgentInterface* GenericTeamAgentInterface = Cast<IGenericTeamAgentInterface>(NewController))
+	{
+		SetGenericTeamId(GenericTeamAgentInterface->GetGenericTeamId());
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 UAbilitySystemComponent* ANEB_Character::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent.Get();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ANEB_Character::SetGenericTeamId(const FGenericTeamId& NewTeamID)
+{
+	if (NewTeamID != TeamID)
+	{
+		TeamID = NewTeamID;
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

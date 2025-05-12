@@ -4,6 +4,7 @@
 
 // Engine Includes
 #include "CoreMinimal.h"
+#include "Definitions/NEB_AIDefinitions.h"
 #include "UObject/Interface.h"
 
 // Generated Header Included Last
@@ -27,4 +28,7 @@ class NEBULA_API INEB_AIStateInterface
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	ENEB_AIState BP_GetAIState() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void BP_SetAIState(const ENEB_AIState NewAIState);
 };
